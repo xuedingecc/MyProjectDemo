@@ -1,6 +1,6 @@
-照着django的pdf所做的项目练习
 
-工具：
+
+工具：pycharm django 
 数据库：sqlite
 前端：bootstrap（jquery.js,popper.js--下拉组件） markdown
 
