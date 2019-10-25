@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
 
+from boards.forms import PostForm
 from boards.models import Board, Topic, Post
+from boards.views import reply_topic
 
 
 class ReplyTopicTestCase(TestCase):
@@ -17,14 +19,43 @@ class ReplyTopicTestCase(TestCase):
 
 
 class LoginRequireReplyTopicTests(ReplyTopicTestCase):
-    pass
+    def test_redirection(self):
+        login_url = reverse('login')
+        response = self.client.get(self.url)
+        self.assertRedirects(response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))
 
 
 class ReplyTopicTests(ReplyTopicTestCase):
-    pass
+    def setUp(self):
+        super().setUp()
+        self.client.login(username=self.username, password=self.password)
+        self.response = self.client.get(self.url)
+
+    def test_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
+
+    def test_view_function(self):
+        view = resolve('/boards/1/topics/1/reply/')
+        self.assertEquals(view.func, reply_topic)
+
+    def test_csrf(self):
+        self.assertContains(self.response, 'csrfmiddlewaretoken')
+
+    def test_contains_form(self):
+        form = self.response.context.get('form')
+        self.assertIsInstance(form, PostForm)
+
+    def test_form_inputs(self):
+        self.assertContains(self.response, '<input', 1)
+        self.assertContains(self.response, '<textarea', 1)
 
 
 class SuccessfulReplyTopicTests(ReplyTopicTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client.login(username=self.username, password=self.password)
+        self.response = self.client.post(self.url, {'message': 'hello, world!'})
+
     def test_redirection(self):
         url = reverse('topic_posts', kwargs={'pk': self.board.pk, 'topic_pk': self.topic.pk})
         topic_posts_url = '{url}?page=1#2'.format(url=url)
@@ -32,4 +63,11 @@ class SuccessfulReplyTopicTests(ReplyTopicTestCase):
 
 
 class InvalidReplyTopicTests(ReplyTopicTestCase):
-    pass
+    def setUp(self):
+        super().setUp()
+        self.client.login(username=self.username, password=self.password)
+        self.response = self.client.post(self.url, {})
+
+    def test_form_errors(self):
+        form = self.response.context.get('form')
+        self.assertTrue(form.errors)

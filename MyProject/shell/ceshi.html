@@ -1,0 +1,41 @@
+<div id="div1">
+    <p id="p1">这是第一个段落</p>
+    <p id="p2">这是第二个段落</p>
+</div>
+<script>
+    //创建新的元素
+    var para = document.createElement("p");//创建一个新的元素
+    var node = document.createTextNode("这是一个新加的段落");//创建一个新的文本节点
+    para.appendChild(node);//向<p>元素追加这个文本节点
+    var element = document.getElementById("div1");
+    element.appendChild(para);//向已有元素追加新的元素
+
+    //删除已有的元素
+    var parent = document.getElementById("div1");
+    var chlid = document.getElementById("p1");
+    parent.removeChild(chlid);//从父元素中删除子元素
+
+    $('p')//选取<p>元素
+    $('p.intro')//选取所有class='intro'的<p>元素
+    $('p#demo')//选取所有id='demo'的<p>元素
+
+    $('[href]')//选取所有带有href属性的元素
+    $("[href='#']")//选取所有带有href值等于'#'的元素
+
+    $('p').css('background-color', 'red')
+
+    $('span').parent('ul')//只对上一级进行遍历
+    $('span').parent('ul')//对所有祖先元素进行遍历
+    $('span').parentsUntil('div')//返回介于span元素和div元素中间的所有祖先元素
+
+    $('span').children()//返回被选元素的所有直接子元素
+    $('span').find()//返回被选元素的所有后代元素，一直到最后一代
+
+    siblings()：返回被选元素的所有同胞元素
+    next()：返回被选元素的下一个同胞元素
+    nextAll()：返回被选元素的所有跟随元素
+    nextUntil()：返回介于2个给定元素之间的所有跟随元素
+    prev()
+    prevAll()
+    prevUntil()
+</script>

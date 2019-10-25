@@ -71,7 +71,6 @@ class TopicListView(ListView):
 @login_required
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
-    # user = User.objects.first()
     if request.method == 'POST':
         form = NewTopicForm(request.POST)
         if form.is_valid():

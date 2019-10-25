@@ -27,7 +27,9 @@ urlpatterns = [
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^boards/(?P<pk>\d+)/$', views.TopicListView.as_view(), name='board_topics'),
     url(r'^boards/(?P<pk>\d+)/new/$', views.new_topic, name='new_topic'),
+
     url(r'^admin/', admin.site.urls),
+
     url(r'^reset/$',
         auth_views.PasswordResetView.as_view(
             template_name='password_reset.html',

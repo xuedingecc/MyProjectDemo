@@ -21,7 +21,7 @@ class LoginRequiredNewTopicTests(TestCase):
 class NewTopicTests(TestCase):
     def setUp(self):
         Board.objects.create(name='Django', description='Django board')
-        User.objects.create(username='john', email='john@doe.com', password='123')
+        User.objects.create_user(username='john', email='john@doe.com', password='123')
         self.client.login(username='john', password='123')
 
     def test_new_topic_view_success_status_code(self):

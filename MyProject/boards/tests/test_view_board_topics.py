@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from boards.models import Board
-from boards.views import board_topics, TopicListView
+from boards.views import TopicListView
 
 
 class BoardTopicsTests(TestCase):
